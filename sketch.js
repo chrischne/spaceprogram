@@ -1,30 +1,21 @@
-//this sketch uses the box2d library
-//press 'v' to create a box and drop it on the slope
-//press 'a' to set an acceleration. press 'a' again set acceleration to 0
-//check out https://www.youtube.com/watch?v=y7sgcFhk6ZM how to make a terrain based on perlin noise
-
 // A reference to our box2d world
 var world;
 
-// A reference to vondsey, which basically will be a box
-var vondsey = null;
+// A reference to the rocket
+var rockets = [];
 
-// An object to store information about the uneven surface
-var surface;
+//planets
+var planets = [];
+var nPlanets = 10;
 
-//viewport object to define which portion of the world is seen on the canvas
 var viewport = null;
 
 var viewportX = 0;
 var viewportY = 0;
 
-//change these values in order to see how the viewport works
-//its a good practice to choose values such that viewportWidth/viewportHeight ratio is equal to width/height ratio
 var viewportWidth = 800;
 var viewportHeight = 500;
 
-//A reference to the acceleration value, used for setting acceleration of vondsey
-//typing 'a' sets acc to a value, typing 'a' again sets acc to 0
 var acc = 0;
 
 function setup() {
@@ -39,15 +30,15 @@ function setup() {
   //Initialize box2d physics and create the world
   world = createWorld();
 
-  //generateTerrain creates a terrain with 100 vertices. 
-  //you want to change the function generateTerrain such that it creates something like a ski slope.
-  var vertices = generateTerrain(100);
-  console.log(vertices);
+  for (var i = 0; i < nPlanets; i++) {
+    var p = new Planet(random(0, width), random(0, height), random(10, 40));
+    planets.push(p);
+  }
 
-  //Create the surface in box2d based on vertices
-  surface = new Surface(vertices);
+  var r = new Rocket(random(0, width), random(0, height), 10, 30);
+  rockets.push(r);
 
-  dropParticle();
+  console.log(planets);
 
   frameRate(30);
 }
@@ -56,32 +47,47 @@ function draw() {
   background(51);
 
   //apply forces
-  if (vondsey) {
-    vondsey.accelerate(acc, 0);
-  }
+  /* if (vondsey) {
+     vondsey.accelerate(acc, 0);
+   }*/
+
+   //console.log('acc',acc);
+   rockets.forEach(function(r){
+      r.accelerate(0,acc);
+   });
 
   // We must always step through time!
   var timeStep = 1.0 / 30;
 
   // 2nd and 3rd arguments are velocity and position iterations
   world.Step(timeStep, 10, 10);
-
-  if (vondsey) {
+  world.ClearForces();
+  /*if (vondsey) {
     //update viewport so that its focused on vondsey
     var pos = scaleToPixels(vondsey.body.GetPosition());
     viewport.setPos(pos.x, pos.y);
-  }
+  }*/
 
-  //draw the surface
-  surface.display(viewport);
+  //draw the planets
+  planets.forEach(function(p) {
+    p.display(viewport);
+  });
+
+  //draw rocket
+  rockets.forEach(function(r) {
+    r.display(viewport);
+  });
+
+  //surface.display(viewport);
 
   //draw vondsey
-  if (vondsey) {
+  /*if (vondsey) {
     vondsey.display(viewport);
-  }
+  }*/
 
 }
 
+/*
 function dropParticle() {
   if (vondsey) {
     //remove vondsey if existing
@@ -155,16 +161,16 @@ function generateTerrain(n) {
 
   return pts;
 
-}
+}*/
 
 function keyTyped() {
   console.log('keyTyped', key);
 
   if (key == 'v') {
-    dropParticle();
+    //dropParticle();
   } else if (key == 'a') {
     if (acc == 0) {
-      acc = 10;
+      acc = -1;
     } else {
       acc = 0;
     }

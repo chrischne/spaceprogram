@@ -4,7 +4,7 @@
 
 // Constructor
 //this will be the rocket or make rocket similar
-function Particle(x, y, w, h) {
+function Rocket(x, y, w, h) {
   this.w = w;
   this.h = h;
 
@@ -25,7 +25,7 @@ function Particle(x, y, w, h) {
 
   // Some physics
   fd.density = 1.0;
-  fd.friction = 0.0001;
+  fd.friction = 0.1;
   fd.restitution = 0.3;
 
   // Create the body
@@ -42,7 +42,7 @@ function Particle(x, y, w, h) {
     world.DestroyBody(this.body);
   };
 
-  // Is the particle ready for deletion?
+  /*// Is the particle ready for deletion?
   this.done = function() {
     // Let's find the screen position of the particle
     var transform = this.body.GetTransform();
@@ -53,7 +53,7 @@ function Particle(x, y, w, h) {
       return true;
     }
     return false;
-  };
+  };*/
 
   this.accelerate = function(x, y) {
     console.log('accelerate ', x, y);

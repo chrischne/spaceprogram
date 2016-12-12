@@ -1,12 +1,5 @@
-// The Nature of Code
-// Daniel Shiffman
-// http://natureofcode.com
-
-// Constructor
-//this will be the rocket or make rocket similar
-function Particle(x, y, w, h) {
-  this.w = w;
-  this.h = h;
+function Planet(x, y, r) {
+  this.r = r;
 
   // Define a body
   var bd = new box2d.b2BodyDef();
@@ -16,16 +9,12 @@ function Particle(x, y, w, h) {
   // Define a fixture
   var fd = new box2d.b2FixtureDef();
   // Fixture holds shape
-  fd.shape = new box2d.b2PolygonShape(); //new box2d.b2CircleShape();
-  fd.shape.SetAsBox(
-    scaleToWorld(0.5 * this.w),
-    scaleToWorld(0.5 * this.h)
-  );
-  // fd.shape.m_radius = scaleToWorld(this.r);
+  fd.shape = new box2d.b2CircleShape();
+  fd.shape.m_radius = scaleToWorld(this.r);
 
   // Some physics
   fd.density = 1.0;
-  fd.friction = 0.0001;
+  fd.friction = 0.1;
   fd.restitution = 0.3;
 
   // Create the body
@@ -42,7 +31,7 @@ function Particle(x, y, w, h) {
     world.DestroyBody(this.body);
   };
 
-  // Is the particle ready for deletion?
+ /* // Is the particle ready for deletion?
   this.done = function() {
     // Let's find the screen position of the particle
     var transform = this.body.GetTransform();
@@ -62,7 +51,7 @@ function Particle(x, y, w, h) {
     var f = new box2d.b2Vec2(v.x, v.y);
     var worldCenter = this.body.GetWorldCenter();
     this.body.ApplyForce(f, worldCenter);
-  };
+  };*/
 
   // Drawing the Particle
   this.display = function(viewport) {
@@ -72,8 +61,7 @@ function Particle(x, y, w, h) {
     var screenY = map(pos.y, viewport.top, viewport.bottom, 0, height);
 
     var sc = (width - 0) / (viewport.right - viewport.left)
-    var screenW = sc * this.w;
-    var screenH = sc * this.h;
+    var screenR = sc * this.r;
 
     // Get its angle of rotation
     var a = this.body.GetAngleRadians();
@@ -88,8 +76,8 @@ function Particle(x, y, w, h) {
     fill(127);
     stroke(200);
     //strokeWeight(2);
-    //rect(0, 0, this.r*2, this.r*2);
-    rect(0, 0, screenW, screenH);
+    ellipse(0,0,screenR*2,screenR*2);
     pop();
   };
+
 }
