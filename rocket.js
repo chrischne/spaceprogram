@@ -26,7 +26,7 @@ function Rocket(x, y, w, h) {
   // Some physics
   fd.density = 1.0;
   fd.friction = 0.1;
-  fd.restitution = 0.3;
+  fd.restitution = 0.1;
 
   // Create the body
   this.body = world.CreateBody(bd);
@@ -73,11 +73,11 @@ function Rocket(x, y, w, h) {
   };
 
   this.rotate = function(angle){
-    console.log('this.body',this.body);
+    console.log('this.body',this.body,this.body.GetMass());
     var currAngle = this.body.GetAngleDegrees();
     var newAngle = currAngle + angle;
     this.body.SetAngleDegrees(newAngle);
-    console.log(currAngle);
+    //console.log(currAngle);
   };
 
 

@@ -4,6 +4,7 @@ function Planet(x, y, r) {
   // Define a body
   var bd = new box2d.b2BodyDef();
   bd.type = box2d.b2BodyType.b2_dynamicBody;
+ // bd.type = box2d.b2BodyType.b2_staticBody;
   bd.position = scaleToWorld(x, y);
 
   // Define a fixture
@@ -13,8 +14,8 @@ function Planet(x, y, r) {
   fd.shape.m_radius = scaleToWorld(this.r);
 
   // Some physics
-  fd.density = 1.0;
-  fd.friction = 0.1;
+  fd.density = 1000.0;
+  fd.friction = 10;
   fd.restitution = 0.3;
 
   // Create the body

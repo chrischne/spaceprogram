@@ -6,7 +6,7 @@ var rockets = [];
 
 //planets
 var planets = [];
-var nPlanets = 10;
+var nPlanets = 1;
 
 var viewport = null;
 
@@ -17,6 +17,11 @@ var viewportWidth = 800;
 var viewportHeight = 500;
 
 var acc = 0;
+
+//helper variable for attraction
+var distance = new box2d.b2Vec2(0, 0);
+
+
 
 function setup() {
   createCanvas(800, 500);
@@ -31,7 +36,7 @@ function setup() {
   world = createWorld();
 
   for (var i = 0; i < nPlanets; i++) {
-    var p = new Planet(random(0, width), random(0, height), random(10, 40));
+    var p = new Planet(random(0, width), random(0, height), random(50, 60));
     planets.push(p);
   }
 
@@ -51,10 +56,13 @@ function draw() {
      vondsey.accelerate(acc, 0);
    }*/
 
-   //console.log('acc',acc);
-   rockets.forEach(function(r){
-      r.accelerate(0,acc);
-   });
+  //console.log('acc',acc);
+  rockets.forEach(function(r) {
+    r.accelerate(0, acc);
+    planets.forEach(function(p){
+      applyAttraction(p,r);
+    });
+  });
 
   // We must always step through time!
   var timeStep = 1.0 / 30;
@@ -67,6 +75,11 @@ function draw() {
     var pos = scaleToPixels(vondsey.body.GetPosition());
     viewport.setPos(pos.x, pos.y);
   }*/
+
+  rockets.forEach(function(r){
+    var pos = scaleToPixels(r.body.GetPosition());
+    viewport.setPos(pos.x, pos.y);
+  });
 
   //draw the planets
   planets.forEach(function(p) {
@@ -175,15 +188,52 @@ function keyTyped() {
       acc = 0;
     }
     console.log('acc', acc);
-  }
-  else if(key == 'q'){
-    rockets.forEach(function(r){
+  } else if (key == 'q') {
+    rockets.forEach(function(r) {
       r.rotateLeft(10);
     });
-  }
-  else if(key == 'w'){
-    rockets.forEach(function(r){
+  } else if (key == 'w') {
+    rockets.forEach(function(r) {
       r.rotateRight(10);
     });
   }
+}
+
+
+function applyAttraction(planet, rocket) {
+
+  //hardcoded version, makes things faster
+  var p_pos = rocket.body.GetWorldCenter();
+  var anchor_pos = planet.body.GetWorldCenter();
+  var p_mass = rocket.body.GetMass();
+  var anchor_mass = planet.body.GetMass();
+
+  //console.log('distance',distance);
+  distance.SetXY(0, 0);
+
+  // Add the distance to the debris
+  distance.SelfAdd(p_pos);
+
+  // Subtract the distance to the anchors's position
+  // to get the vector between the particle and the anchors.
+  distance.SelfSub(anchor_pos);
+
+  if (distance.Length() < 0.01) {
+    // console.log('setting gravity to zero');
+    //gravity = 0;
+    return;
+  }
+
+  //to be changed
+ // var force = 5 / distance.Length() * distance.Length();
+ var constant = 0.001;
+ var distanceSquared = distance.Length() * distance.Length();
+var force = (constant * p_mass * anchor_mass) / distanceSquared;
+  //console.log('force',force);
+
+  distance.Normalize();
+  distance.SelfNeg();
+
+  distance.SelfMul(force);
+  rocket.body.ApplyForce(distance,rocket.body.GetWorldCenter());
 }
