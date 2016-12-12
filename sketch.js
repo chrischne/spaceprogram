@@ -176,4 +176,14 @@ function keyTyped() {
     }
     console.log('acc', acc);
   }
+  else if(key == 'q'){
+    rockets.forEach(function(r){
+      r.rotateLeft(10);
+    });
+  }
+  else if(key == 'w'){
+    rockets.forEach(function(r){
+      r.rotateRight(10);
+    });
+  }
 }

@@ -64,6 +64,23 @@ function Rocket(x, y, w, h) {
     this.body.ApplyForce(f, worldCenter);
   };
 
+  this.rotateLeft = function(angle){
+      this.rotate(-angle);
+  };
+
+  this.rotateRight = function(angle){
+    this.rotate(angle);
+  };
+
+  this.rotate = function(angle){
+    console.log('this.body',this.body);
+    var currAngle = this.body.GetAngleDegrees();
+    var newAngle = currAngle + angle;
+    this.body.SetAngleDegrees(newAngle);
+    console.log(currAngle);
+  };
+
+
   // Drawing the Particle
   this.display = function(viewport) {
     // Get the body's position
