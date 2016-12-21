@@ -40,7 +40,7 @@ function setup() {
   var homePlanet = new Planet(width/2, height/2, 30);
   planets.push(homePlanet);
 
-  var r = new Rocket(0.5*width, 0.5*height - 60, 20,5);
+  var r = new Rocket(0.5*width, 0.5*height - 60, 5,20);
   rockets.push(r);
 
   //create planets
