@@ -1,6 +1,7 @@
 //TODO
 //Distance from home planet
 //Fuel
+//display speed
 
 
 // A reference to our box2d world
@@ -30,6 +31,11 @@ var rocketThrust = 0.001;
 //helper variable for attraction
 var distance = new box2d.b2Vec2(0, 0);
 
+var rocketImg = null;
+
+function preload(){
+  rocketImg = loadImage('assets/rocket.svg');
+}
 
 
 function setup() {
@@ -65,7 +71,7 @@ function setup() {
 }
 
 function draw() {
-  background(51);
+  background(255);
 
   interact();
 

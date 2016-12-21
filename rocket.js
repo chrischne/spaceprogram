@@ -19,7 +19,7 @@ function Rocket(x, y, w, h) {
   fd.shape = new box2d.b2PolygonShape(); //new box2d.b2CircleShape();
   fd.shape.SetAsBox(
     scaleToWorld(0.1 * this.w),
-    scaleToWorld(0.5* this.h)
+    scaleToWorld(0.5 * this.h)
   );
   // fd.shape.m_radius = scaleToWorld(this.r);
 
@@ -33,21 +33,21 @@ function Rocket(x, y, w, h) {
   leftStelt.shape = new box2d.b2PolygonShape();
   leftStelt.shape.SetAsOrientedBox(
     scaleToWorld(0.5 * this.w),
-    scaleToWorld( 0.5*this.w),
-    new box2d.b2Vec2(scaleToWorld(-this.w),scaleToWorld(0.5*this.h)/*-0.5*this.w,0.5*this.h*/),
+    scaleToWorld(0.5 * this.w),
+    new box2d.b2Vec2(scaleToWorld(-this.w), scaleToWorld(0.5 * this.h) /*-0.5*this.w,0.5*this.h*/ ),
     0
   );
   leftStelt.density = 0.1;
   leftStelt.friction = 0.5;
   leftStelt.restitution = 0.2;
 
-    // Define fixture #3
+  // Define fixture #3
   var rightStelt = new box2d.b2FixtureDef();
   rightStelt.shape = new box2d.b2PolygonShape();
   rightStelt.shape.SetAsOrientedBox(
     scaleToWorld(0.5 * this.w),
-    scaleToWorld( 0.5*this.w),
-    new box2d.b2Vec2(scaleToWorld(this.w),scaleToWorld(0.5*this.h)/*-0.5*this.w,0.5*this.h*/),
+    scaleToWorld(0.5 * this.w),
+    new box2d.b2Vec2(scaleToWorld(this.w), scaleToWorld(0.5 * this.h) /*-0.5*this.w,0.5*this.h*/ ),
     0
   );
   rightStelt.density = 0.1;
@@ -62,7 +62,7 @@ function Rocket(x, y, w, h) {
   // Attach the fixture
   this.body.CreateFixture(fd);
   this.body.CreateFixture(leftStelt);
-   this.body.CreateFixture(rightStelt);
+  this.body.CreateFixture(rightStelt);
 
   // Some additional stuff
   //this.body.SetLinearVelocity(new box2d.b2Vec2(random(-5, 5), random(2, 5)));
@@ -95,20 +95,20 @@ function Rocket(x, y, w, h) {
     this.body.ApplyForce(f, worldCenter);
   };
 
-  this.rotateLeft = function(angle){
+  this.rotateLeft = function(angle) {
     this.body.SetAngularVelocity(0);
-      this.rotate(-angle);
+    this.rotate(-angle);
 
-      console.log(this.body);
+    console.log(this.body);
   };
 
-  this.rotateRight = function(angle){
+  this.rotateRight = function(angle) {
     this.body.SetAngularVelocity(0);
     this.rotate(angle);
   };
 
-  this.rotate = function(angle){
-    console.log('this.body',this.body,this.body.GetMass());
+  this.rotate = function(angle) {
+    console.log('this.body', this.body, this.body.GetMass());
     var currAngle = this.body.GetAngleDegrees();
     var newAngle = currAngle + angle;
     this.body.SetAngleDegrees(newAngle);
@@ -147,15 +147,18 @@ function Rocket(x, y, w, h) {
 
     //left Stelt
     push();
-    translate(-screenW,0.5*screenH);
-    rect(0,0,screenW,screenW);
+    translate(-screenW, 0.5 * screenH);
+    rect(0, 0, screenW, screenW);
     pop();
 
     //right Stelt
     push();
-    translate(screenW,0.5*screenH);
-    rect(0,0,screenW,screenW);
+    translate(screenW, 0.5 * screenH);
+    rect(0, 0, screenW, screenW);
     pop();
+
+    imageMode(CENTER);
+    image(rocketImg, 0, 0,screenW*3,1.4*screenH);
     pop();
     pop();
   };

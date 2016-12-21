@@ -74,8 +74,8 @@ function Planet(x, y, r) {
     //translate(pos.x,pos.y);
     translate(screenX, screenY);
     rotate(a);
-    fill(127);
-    stroke(200);
+    fill(0);
+    stroke(0);
     //strokeWeight(2);
     ellipse(0,0,screenR*2,screenR*2);
     pop();
