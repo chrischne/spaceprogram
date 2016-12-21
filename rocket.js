@@ -18,8 +18,8 @@ function Rocket(x, y, w, h) {
   // Fixture holds shape
   fd.shape = new box2d.b2PolygonShape(); //new box2d.b2CircleShape();
   fd.shape.SetAsBox(
-    scaleToWorld(0.5 * this.w),
-    scaleToWorld(0.5 * this.h)
+    scaleToWorld(0.1 * this.w),
+    scaleToWorld(0.5* this.h)
   );
   // fd.shape.m_radius = scaleToWorld(this.r);
 
@@ -33,7 +33,7 @@ function Rocket(x, y, w, h) {
   leftStelt.shape = new box2d.b2PolygonShape();
   leftStelt.shape.SetAsOrientedBox(
     scaleToWorld(0.5 * this.w),
-    scaleToWorld( 0.5*this.h),
+    scaleToWorld( 0.5*this.w),
     new box2d.b2Vec2(scaleToWorld(-this.w),scaleToWorld(0.5*this.h)/*-0.5*this.w,0.5*this.h*/),
     0
   );
@@ -46,7 +46,7 @@ function Rocket(x, y, w, h) {
   rightStelt.shape = new box2d.b2PolygonShape();
   rightStelt.shape.SetAsOrientedBox(
     scaleToWorld(0.5 * this.w),
-    scaleToWorld( 0.5*this.h),
+    scaleToWorld( 0.5*this.w),
     new box2d.b2Vec2(scaleToWorld(this.w),scaleToWorld(0.5*this.h)/*-0.5*this.w,0.5*this.h*/),
     0
   );
@@ -148,13 +148,13 @@ function Rocket(x, y, w, h) {
     //left Stelt
     push();
     translate(-screenW,0.5*screenH);
-    rect(0,0,screenW,screenH);
+    rect(0,0,screenW,screenW);
     pop();
 
     //right Stelt
     push();
     translate(screenW,0.5*screenH);
-    rect(0,0,screenW,screenH);
+    rect(0,0,screenW,screenW);
     pop();
     pop();
     pop();

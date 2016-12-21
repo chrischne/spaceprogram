@@ -25,7 +25,7 @@ var viewportHeight = 1;
 var followRocket = true;
 
 var acc = 0;
-var rocketThrust = 0.005;
+var rocketThrust = 0.001;
 
 //helper variable for attraction
 var distance = new box2d.b2Vec2(0, 0);
