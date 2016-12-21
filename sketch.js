@@ -18,6 +18,7 @@ var viewportWidth = 800;
 var viewportHeight = 500;
 
 var acc = 0;
+var rocketThrust = 10;
 
 //helper variable for attraction
 var distance = new box2d.b2Vec2(0, 0);
@@ -67,6 +68,9 @@ function draw() {
   /* if (vondsey) {
      vondsey.accelerate(acc, 0);
    }*/
+
+  interaction();
+
 
   //console.log('acc',acc);
   rockets.forEach(function(r) {
@@ -188,8 +192,16 @@ function generateTerrain(n) {
 
 }*/
 
-function keyTyped() {
-  console.log('keyTyped', key);
+function interaction(){
+  acc = 0;
+  if(keyIsDown(UP_ARROW)){
+   // console.log('g');
+    acc = -rocketThrust;
+  }
+}
+
+function keyPressed() {
+  //console.log('keyTyped', key);
 
   if (key == 'v') {
     //dropParticle();
@@ -200,11 +212,11 @@ function keyTyped() {
       acc = 0;
     }
     console.log('acc', acc);
-  } else if (key == 'q') {
+  } else if (keyCode == LEFT_ARROW) {
     rockets.forEach(function(r) {
       r.rotateLeft(10);
     });
-  } else if (key == 'w') {
+  } else if (keyCode == RIGHT_ARROW) {
     rockets.forEach(function(r) {
       r.rotateRight(10);
     });
