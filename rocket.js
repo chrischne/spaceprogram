@@ -24,7 +24,7 @@ function Rocket(x, y, w, h) {
   // fd.shape.m_radius = scaleToWorld(this.r);
 
   // Some physics
-  fd.density = 1.0;
+  fd.density = 0.1;
   fd.friction = 0.1;
   fd.restitution = 0.1;
 
@@ -37,7 +37,7 @@ function Rocket(x, y, w, h) {
     new box2d.b2Vec2(scaleToWorld(-this.w),scaleToWorld(0.5*this.h)/*-0.5*this.w,0.5*this.h*/),
     0
   );
-  leftStelt.density = 1.0;
+  leftStelt.density = 0.1;
   leftStelt.friction = 0.5;
   leftStelt.restitution = 0.2;
 
@@ -50,7 +50,7 @@ function Rocket(x, y, w, h) {
     new box2d.b2Vec2(scaleToWorld(this.w),scaleToWorld(0.5*this.h)/*-0.5*this.w,0.5*this.h*/),
     0
   );
-  rightStelt.density = 1.0;
+  rightStelt.density = 0.1;
   rightStelt.friction = 0.5;
   rightStelt.restitution = 0.2;
 
@@ -96,10 +96,14 @@ function Rocket(x, y, w, h) {
   };
 
   this.rotateLeft = function(angle){
+    this.body.SetAngularVelocity(0);
       this.rotate(-angle);
+
+      console.log(this.body);
   };
 
   this.rotateRight = function(angle){
+    this.body.SetAngularVelocity(0);
     this.rotate(angle);
   };
 

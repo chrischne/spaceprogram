@@ -11,7 +11,7 @@ var rocket = null;
 
 //planets
 var planets = [];
-var nPlanets = 1;
+var nPlanets = 20;
 
 
 var viewport = null;
@@ -19,13 +19,13 @@ var viewport = null;
 var viewportX = 0;
 var viewportY = 0;
 
-var viewportWidth = 800 / 2;
-var viewportHeight = 500 / 2;
+var viewportWidth = 50;
+var viewportHeight = 1;
 
 var followRocket = true;
 
 var acc = 0;
-var rocketThrust = 10;
+var rocketThrust = 0.005;
 
 //helper variable for attraction
 var distance = new box2d.b2Vec2(0, 0);
@@ -39,20 +39,22 @@ function setup() {
   viewportY = height / 2;
 
   //create a viewport
+  viewportHeight = (height/width)*viewportWidth;
   viewport = new Viewport(viewportX, viewportY, viewportWidth, viewportHeight);
 
   //Initialize box2d physics and create the world
   world = createWorld();
 
   //create a home planet
-  var homePlanet = new Planet(width / 2, height / 2, 30);
+  var homePlanetR = 20;
+  var homePlanet = new Planet(width / 2, height / 2, homePlanetR);
   planets.push(homePlanet);
 
-  rocket = new Rocket(0.5 * width, 0.5 * height - 60, 5, 20);
+  rocket = new Rocket(0.5 * width, 0.5 * height - 1.2*homePlanetR, 0.5, 2);
 
   //create planets
   for (var i = 0; i < nPlanets; i++) {
-    var p = new Planet(random(0, width), random(0, height), random(5, 10));
+    var p = new Planet(random(0, width), random(0, height), random(5, 30));
     planets.push(p);
   }
 
