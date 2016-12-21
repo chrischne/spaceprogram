@@ -1,3 +1,8 @@
+//TODO
+//Distance from home planet
+//Fuel
+
+
 // A reference to our box2d world
 var world;
 
@@ -14,8 +19,10 @@ var viewport = null;
 var viewportX = 0;
 var viewportY = 0;
 
-var viewportWidth = 800;
-var viewportHeight = 500;
+var viewportWidth = 800 / 2;
+var viewportHeight = 500 / 2;
+
+var followRocket = true;
 
 var acc = 0;
 var rocketThrust = 10;
@@ -49,9 +56,9 @@ function setup() {
     planets.push(p);
   }
 
-
   console.log(planets);
 
+  viewportMap();
   frameRate(30);
 }
 
@@ -66,10 +73,11 @@ function draw() {
 
 }
 
-function display(){
-    //center viewport on rocket
- // var pos = scaleToPixels(rocket.body.GetPosition());
- // viewport.setPos(pos.x, pos.y);
+function display() {
+  //center viewport on rocket
+  // var pos = scaleToPixels(rocket.body.GetPosition());
+  // viewport.setPos(pos.x, pos.y);
+  updateViewport();
 
   //draw the planets
   planets.forEach(function(p) {
@@ -80,6 +88,13 @@ function display(){
   rocket.display(viewport);
 }
 
+function updateViewport() {
+  if (followRocket) {
+    var pos = scaleToPixels(rocket.body.GetPosition());
+    viewport.setPos(pos.x, pos.y);
+  }
+}
+
 function interact() {
   acc = 0;
   if (keyIsDown(UP_ARROW)) {
@@ -88,8 +103,8 @@ function interact() {
   }
 }
 
-function simulate(){
-    //accelerate rocket
+function simulate() {
+  //accelerate rocket
   rocket.accelerate(0, acc);
 
   //apply planet gravity to rocket
@@ -111,7 +126,22 @@ function keyPressed() {
     rocket.rotateLeft(10);
   } else if (keyCode == RIGHT_ARROW) {
     rocket.rotateRight(10);
+  } else if (key == 'M') {
+    console.log('m');
+    viewportMap();
+  } else if (key == 'R') {
+    viewportRocket();
   }
+}
+
+function viewportRocket() {
+  followRocket = true;
+  viewport.set(width / 2, height / 2, viewportWidth, viewportHeight);
+}
+
+function viewportMap() {
+  followRocket = false;
+  viewport.set(width / 2, height / 2, width, height);
 }
 
 
