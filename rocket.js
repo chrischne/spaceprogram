@@ -28,10 +28,24 @@ function Rocket(x, y, w, h) {
   fd.friction = 0.1;
   fd.restitution = 0.1;
 
+  // Define fixture #2
+  var leftStelt = new box2d.b2FixtureDef();
+  leftStelt.shape = new box2d.b2PolygonShape();
+  leftStelt.shape.SetAsBox(
+    scaleToWorld(0.5 * this.h),
+    scaleToWorld(0.5 * this.w)
+  );
+  var offset = scaleToWorld(new box2d.b2Vec2(0,-this.h/2));
+  //leftStelt.shape.m_p = new box2d.b2Vec2(offset.x,offset.y);
+  leftStelt.density = 1.0;
+  leftStelt.friction = 0.5;
+  leftStelt.restitution = 0.2;
+
   // Create the body
   this.body = world.CreateBody(bd);
   // Attach the fixture
   this.body.CreateFixture(fd);
+  this.body.CreateFixture(leftStelt);
 
   // Some additional stuff
   //this.body.SetLinearVelocity(new box2d.b2Vec2(random(-5, 5), random(2, 5)));
@@ -107,6 +121,7 @@ function Rocket(x, y, w, h) {
     //strokeWeight(2);
     //rect(0, 0, this.r*2, this.r*2);
     rect(0, 0, screenW, screenH);
+    rect(0, 0, screenH, screenW);
     pop();
   };
 }

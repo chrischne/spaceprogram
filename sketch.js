@@ -8,6 +8,7 @@ var rockets = [];
 var planets = [];
 var nPlanets = 1;
 
+
 var viewport = null;
 
 var viewportX = 0;
@@ -26,7 +27,7 @@ var distance = new box2d.b2Vec2(0, 0);
 function setup() {
   createCanvas(800, 500);
 
-  viewportX = width / 2;
+  viewportX = width /2;
   viewportY = height / 2;
 
   //create a viewport
@@ -35,13 +36,24 @@ function setup() {
   //Initialize box2d physics and create the world
   world = createWorld();
 
+  //create a home planet
+  var homePlanet = new Planet(width/2, height/2, 30);
+  planets.push(homePlanet);
+
+  var r = new Rocket(0.5*width, 0.5*height - 60, 20,5);
+  rockets.push(r);
+
+  //create planets
   for (var i = 0; i < nPlanets; i++) {
-    var p = new Planet(random(0, width), random(0, height), random(50, 60));
+    var p = new Planet(random(0, width), random(0, height), random(5, 10));
     planets.push(p);
   }
 
-  var r = new Rocket(random(0, width), random(0, height), 10, 30);
-  rockets.push(r);
+    //create a rocket
+  //var r = new Rocket(width/2, height/2 - 60, 10);
+
+
+
 
   console.log(planets);
 
@@ -75,11 +87,11 @@ function draw() {
     var pos = scaleToPixels(vondsey.body.GetPosition());
     viewport.setPos(pos.x, pos.y);
   }*/
-
+/*
   rockets.forEach(function(r){
     var pos = scaleToPixels(r.body.GetPosition());
     viewport.setPos(pos.x, pos.y);
-  });
+  });*/
 
   //draw the planets
   planets.forEach(function(p) {
