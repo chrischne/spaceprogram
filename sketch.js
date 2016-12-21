@@ -58,10 +58,38 @@ function setup() {
 function draw() {
   background(51);
 
-  //handlet interaction
   interact();
 
-  //accelerate rocket
+  simulate();
+
+  display();
+
+}
+
+function display(){
+    //center viewport on rocket
+ // var pos = scaleToPixels(rocket.body.GetPosition());
+ // viewport.setPos(pos.x, pos.y);
+
+  //draw the planets
+  planets.forEach(function(p) {
+    p.display(viewport);
+  });
+
+  //draw rocket
+  rocket.display(viewport);
+}
+
+function interact() {
+  acc = 0;
+  if (keyIsDown(UP_ARROW)) {
+    // console.log('g');
+    acc = -rocketThrust;
+  }
+}
+
+function simulate(){
+    //accelerate rocket
   rocket.accelerate(0, acc);
 
   //apply planet gravity to rocket
@@ -75,27 +103,6 @@ function draw() {
   // 2nd and 3rd arguments are velocity and position iterations
   world.Step(timeStep, 10, 10);
   world.ClearForces();
-
-  //center viewport on rocket
- // var pos = scaleToPixels(rocket.body.GetPosition());
- // viewport.setPos(pos.x, pos.y);
-
-  //draw the planets
-  planets.forEach(function(p) {
-    p.display(viewport);
-  });
-
-  //draw rocket
-  rocket.display(viewport);
-
-}
-
-function interact() {
-  acc = 0;
-  if (keyIsDown(UP_ARROW)) {
-    // console.log('g');
-    acc = -rocketThrust;
-  }
 }
 
 function keyPressed() {
