@@ -34,7 +34,7 @@ var followRocket = true;
 var autoZoom = true;
 
 var acc = 0;
-var rocketThrust = 0.001;
+var rocketThrust = 0.00145;
 
 //helper variable for attraction
 var distance = new box2d.b2Vec2(0, 0);

@@ -37,7 +37,7 @@ function Rocket(x, y, w, h) {
     new box2d.b2Vec2(scaleToWorld(-this.w), scaleToWorld(0.5 * this.h) /*-0.5*this.w,0.5*this.h*/ ),
     0
   );
-  leftStelt.density = 0.1;
+  leftStelt.density = 0.2;
   leftStelt.friction = 0.5;
   leftStelt.restitution = 0.2;
 
@@ -50,7 +50,7 @@ function Rocket(x, y, w, h) {
     new box2d.b2Vec2(scaleToWorld(this.w), scaleToWorld(0.5 * this.h) /*-0.5*this.w,0.5*this.h*/ ),
     0
   );
-  rightStelt.density = 0.1;
+  rightStelt.density = 0.2;
   rightStelt.friction = 0.5;
   rightStelt.restitution = 0.2;
 
