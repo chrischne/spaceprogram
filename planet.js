@@ -1,6 +1,6 @@
-function Planet(x, y, r) {
+function Planet(img,x, y, r) {
   this.r = r;
-
+  this.img = img;
   // Define a body
   var bd = new box2d.b2BodyDef();
   bd.type = box2d.b2BodyType.b2_dynamicBody;
@@ -31,6 +31,17 @@ function Planet(x, y, r) {
   this.killBody = function() {
     world.DestroyBody(this.body);
   };
+
+  this.getPosition = function(){
+    //console.log('body');
+    //console.log(this.body);
+    return this.body.GetWorldCenter();
+  }
+
+  this.getRadius = function(){
+    //console.log(this.body);
+    return scaleToWorld(this.r);
+  }
 
  /* // Is the particle ready for deletion?
   this.done = function() {
@@ -70,6 +81,7 @@ function Planet(x, y, r) {
     // Draw it!
     //change the code below to draw something which makes more sense than a box
     rectMode(CENTER);
+    imageMode(CENTER);
     push();
     //translate(pos.x,pos.y);
     translate(screenX, screenY);
@@ -77,6 +89,8 @@ function Planet(x, y, r) {
     fill(0);
     stroke(0);
     //strokeWeight(2);
+    image(this.img,0,0,screenR*2,screenR*2);
+    noFill();
     ellipse(0,0,screenR*2,screenR*2);
     pop();
   };

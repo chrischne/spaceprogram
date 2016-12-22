@@ -3,7 +3,10 @@
 //Fuel
 //display speed
 //make zoom depend on distance to planet or speed or so
-
+//attraction from only closest planet
+//jet flame
+//jet sound 
+//show path
 
 
 // A reference to our box2d world
@@ -14,9 +17,9 @@ var rocket = null;
 
 //planets
 var planets = [];
-var nPlanets = 200;
-var planetImgs = ['assets/planet1.png','assets/planet2.png'];
-
+var nPlanets = 100;
+var planetImgPaths = ['assets/planet1.png', 'assets/planet2.png', 'assets/planet3.png'];
+var planetImgs = [];
 
 var viewport = null;
 
@@ -27,6 +30,7 @@ var viewportWidth = 50;
 var viewportHeight = 1;
 
 var followRocket = true;
+var autoZoom = true;
 
 var acc = 0;
 var rocketThrust = 0.001;
@@ -36,38 +40,42 @@ var distance = new box2d.b2Vec2(0, 0);
 
 var rocketImg = null;
 
-var universeDim = 10000;
+var universeDim = 1000;
 
-function preload(){
+function preload() {
   rocketImg = loadImage('assets/rocket.svg');
+  planetImgPaths.forEach(function(path) {
+    var img = loadImage(path);
+    planetImgs.push(img);
+  });
+
 }
 
 
 function setup() {
-  createCanvas(800, 500);
+  createCanvas(1024, 768);
 
   viewportX = width / 2;
   viewportY = height / 2;
 
   //create a viewport
-  viewportHeight = (height/width)*viewportWidth;
+  viewportHeight = (height / width) * viewportWidth;
   viewport = new Viewport(viewportX, viewportY, viewportWidth, viewportHeight);
 
   //Initialize box2d physics and create the world
   world = createWorld();
 
   //create a home planet
-  var homePlanetR = 200;
-  var homePlanet = new Planet(width / 2, height / 2, homePlanetR);
+  var homePlanetR = 20;
+  var homePlanet = new Planet(planetImgs[0], width / 2, height / 2, homePlanetR);
   planets.push(homePlanet);
 
-  rocket = new Rocket(0.5 * width, 0.5 * height - 1.2*homePlanetR, 0.5, 2);
+  rocket = new Rocket(0.5 * width, 0.5 * height - 1.2 * homePlanetR, 0.5, 2);
 
   //create planets
   for (var i = 0; i < nPlanets; i++) {
-   // var p = new Planet(random(0, width), random(0, height), random(5, 30));
-     var p = new Planet(random(-universeDim, universeDim), random(-universeDim,universeDim), random(5, 30));
-  
+    // var p = new Planet(random(0, width), random(0, height), random(5, 30));
+    var p = new Planet(planetImgs[floor(random(0, planetImgs.length))], random(-universeDim, universeDim), random(-universeDim, universeDim), random(5, 20));
     planets.push(p);
   }
 
@@ -104,6 +112,22 @@ function display() {
 }
 
 function updateViewport() {
+
+  if(autoZoom){
+    var minD = Number.MAX_VALUE;
+    var minIndex = 0;
+    var closestPlanet = planets.forEach(function(p,i){
+      var d = distanceTo(p,rocket);
+      if(d<minD){
+        minD = d;
+        minIndex = i;
+      }
+    });
+   // console.log('minD: ' + minD);
+    var zoom = ceil(map(minD,0,20,0.5,10));
+    //console.log('zoom',zoom);
+    viewportZoom(zoom);
+  }
   if (followRocket) {
     var pos = scaleToPixels(rocket.body.GetPosition());
     viewport.setPos(pos.x, pos.y);
@@ -146,7 +170,46 @@ function keyPressed() {
     viewportMap();
   } else if (key == 'R') {
     viewportRocket();
+  } else if (key == '1') {
+    viewportZoom1();
+  } else if (key == '2') {
+    viewportZoom2();
+  } else if (key == '3') {
+    viewportZoom3();
+  } else if (key == '4') {
+    viewportZoom4();
+  } else if (key == '5') {
+    viewportZoom5();
   }
+  else if(key == 'A'){
+    autoZoom = !autoZoom;
+    console.log('autoZoom: ' + autoZoom);
+  }
+}
+
+function viewportZoom1() {
+  viewportZoom(1);
+}
+
+function viewportZoom2() {
+  viewportZoom(2);
+}
+
+function viewportZoom3() {
+  viewportZoom(3);
+}
+
+function viewportZoom4() {
+  viewportZoom(4);
+}
+
+function viewportZoom5() {
+  viewportZoom(5);
+}
+
+function viewportZoom(zoom) {
+  followRocket = true;
+  viewport.set(width / 2, height / 2, zoom * viewportWidth, zoom * viewportHeight);
 }
 
 function viewportRocket() {
@@ -196,4 +259,16 @@ function applyAttraction(planet, rocket) {
 
   distance.SelfMul(force);
   rocket.body.ApplyForce(distance, rocket.body.GetWorldCenter());
+}
+
+function distanceTo(p,r){
+  var posP = p.getPosition().Clone();
+  var posR = r.getPosition().Clone();
+
+  var pRadius = p.getRadius();
+
+  posP.SelfSub(posR);
+   var d = posP.Length() - pRadius;
+ // console.log('d',d,pRadius);
+  return d;
 }

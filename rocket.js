@@ -73,6 +73,10 @@ function Rocket(x, y, w, h) {
     world.DestroyBody(this.body);
   };
 
+  this.getPosition = function(){
+    return this.body.GetWorldCenter();
+  }
+
   /*// Is the particle ready for deletion?
   this.done = function() {
     // Let's find the screen position of the particle
@@ -87,7 +91,7 @@ function Rocket(x, y, w, h) {
   };*/
 
   this.accelerate = function(x, y) {
-    console.log('accelerate ', x, y);
+  //  console.log('accelerate ', x, y);
     var v = createVector(x, y);
     v.rotate(this.body.GetAngle());
     var f = new box2d.b2Vec2(v.x, v.y);
