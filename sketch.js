@@ -20,6 +20,7 @@ var planets = [];
 var nPlanets = 100;
 var planetImgPaths = ['assets/planet1.png', 'assets/planet2.png', 'assets/planet3.png'];
 var planetImgs = [];
+var closestPlanet = 0;
 
 var viewport = null;
 
@@ -114,7 +115,7 @@ function display() {
 function updateViewport() {
 
   if(autoZoom){
-    var minD = Number.MAX_VALUE;
+   /* var minD = Number.MAX_VALUE;
     var minIndex = 0;
     var closestPlanet = planets.forEach(function(p,i){
       var d = distanceTo(p,rocket);
@@ -122,9 +123,10 @@ function updateViewport() {
         minD = d;
         minIndex = i;
       }
-    });
+    });*/
    // console.log('minD: ' + minD);
-    var zoom = ceil(map(minD,0,20,0.5,10));
+   var d = distanceTo(closestPlanet,rocket);
+    var zoom = ceil(map(d,0,20,0.5,10));
     //console.log('zoom',zoom);
     viewportZoom(zoom);
   }
@@ -148,9 +150,11 @@ function simulate() {
 
   //apply planet gravity to rocket
   //TODO only make only influenced by closest planet
-  planets.forEach(function(p) {
+  closestPlanet = getClosestPlanet(planets,rocket);
+ /* planets.forEach(function(p) {
     applyAttraction(p, rocket);
-  });
+  });*/
+  applyAttraction(closestPlanet,rocket);
 
   //simulation step in time
   var timeStep = 1.0 / 30;
@@ -271,4 +275,17 @@ function distanceTo(p,r){
    var d = posP.Length() - pRadius;
  // console.log('d',d,pRadius);
   return d;
+}
+
+function getClosestPlanet(parr,r){
+  var closest = null;
+  var minD = Number.MAX_VALUE;
+  parr.forEach(function(p){
+    var d = distanceTo(p,r);
+    if(d<minD){
+      minD = d;
+      closest = p;
+    }
+  });
+  return closest;
 }
