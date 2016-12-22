@@ -2,6 +2,8 @@
 //Distance from home planet
 //Fuel
 //display speed
+//make zoom depend on distance to planet or speed or so
+
 
 
 // A reference to our box2d world
@@ -12,7 +14,8 @@ var rocket = null;
 
 //planets
 var planets = [];
-var nPlanets = 20;
+var nPlanets = 200;
+var planetImgs = ['assets/planet1.png','assets/planet2.png'];
 
 
 var viewport = null;
@@ -33,6 +36,8 @@ var distance = new box2d.b2Vec2(0, 0);
 
 var rocketImg = null;
 
+var universeDim = 10000;
+
 function preload(){
   rocketImg = loadImage('assets/rocket.svg');
 }
@@ -52,7 +57,7 @@ function setup() {
   world = createWorld();
 
   //create a home planet
-  var homePlanetR = 20;
+  var homePlanetR = 200;
   var homePlanet = new Planet(width / 2, height / 2, homePlanetR);
   planets.push(homePlanet);
 
@@ -60,7 +65,9 @@ function setup() {
 
   //create planets
   for (var i = 0; i < nPlanets; i++) {
-    var p = new Planet(random(0, width), random(0, height), random(5, 30));
+   // var p = new Planet(random(0, width), random(0, height), random(5, 30));
+     var p = new Planet(random(-universeDim, universeDim), random(-universeDim,universeDim), random(5, 30));
+  
     planets.push(p);
   }
 
@@ -148,7 +155,7 @@ function viewportRocket() {
 }
 
 function viewportMap() {
-  followRocket = false;
+  followRocket = true;
   viewport.set(width / 2, height / 2, width, height);
 }
 

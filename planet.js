@@ -14,7 +14,7 @@ function Planet(x, y, r) {
   fd.shape.m_radius = scaleToWorld(this.r);
 
   // Some physics
-  fd.density = 100.0;
+  fd.density = 400.0;
   fd.friction = 10;
   fd.restitution = 0.3;
 
